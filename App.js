@@ -6,33 +6,27 @@ export default function App() {
 
   return (
     <View style={{ padding: 50 }}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <TextInput
-          placeholder="Username"
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 2,
-            padding: 5,
-            width: '80%',
-          }}
-        />
-        <Button title="App" />
+      <View style={styles.inputContainer}>
+        <TextInput placeholder="Username" style={styles.input} />
+        <Button title="Add" />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  screen: {
+    padding: 50,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  input: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    padding: 5,
+    width: '80%',
   },
 });
