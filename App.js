@@ -6,64 +6,52 @@ import {
   View,
   Button,
   ScrollView,
+  FlatList,
 } from 'react-native';
 
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
+
 export default function App() {
-  const [enteredGoal, setEnterGoal] = useState('');
   const [courseGoals, setCourseGoals] = useState([]);
 
-  const goalInputHandler = (enteredText) => {
-    setEnterGoal(enteredText);
+  const addGoalHandler = (goalTitle) => {
+    setCourseGoals((currentGoals) => [
+      ...currentGoals,
+      { id: Math.random().toString(), value: goalTitle },
+    ]);
   };
 
-  const addGoalHandler = () => {
-    setCourseGoals((currentGoals) => [...currentGoals, enteredGoal]);
+  const removeGoalHandler = (goalId) => {
+    setCourseGoals((currentGoals) => {
+      return currentGoals.filter((goal) => {
+        return goal.id !== goalId;
+      });
+    });
   };
 
   return (
-    <View style={{ padding: 50 }}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Username"
-          style={styles.input}
-          onChangeText={goalInputHandler}
-          value={enteredGoal}
-        />
-        <Button title="Add" onPress={addGoalHandler} />
-      </View>
-      <ScrollView>
-        {courseGoals.map((goal, index) => {
-          return (
-            <View style={styles.listItem} key={index}>
-              <Text>{goal}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
+    <View style={styles.screen}>
+      <GoalInput onAddGoal={addGoalHandler} />
+      <FlatList
+        keyExtractor={(item, index) => item.id}
+        data={courseGoals}
+        renderItem={(itemData) => (
+          <GoalItem
+            onDelete={removeGoalHandler.bind(this, itemData.item.id)}
+            title={itemData.item.value}
+          />
+        )}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 50,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  input: {
-    borderColor: 'black',
-    borderWidth: 2,
-    padding: 5,
-    width: '80%',
-  },
-  listItem: {
-    padding: 10,
-    backgroundColor: '#cecece',
-    borderColor: '#555',
-    marginTop: 5,
-    borderWidth: 2,
+    height: '100%',
+    paddingHorizontal: 10,
+    paddingVertical: 50,
+    backgroundColor: '#993399',
   },
 });
